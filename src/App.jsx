@@ -97,7 +97,7 @@ export default function App() {
         {cards.map((card, index) => (
           <div
             key={index}
-            className={`relative w-24 h-24 border-2 rounded-lg ${flippedCards.includes(index) || matchedCards.includes(index) ? "bg-white" : "bg-black"} `}
+            className={`relative w-24 h-24 border-2 rounded-lg ${flippedCards.includes(index) || matchedCards.includes(index) ? "bg-white" : "bg-black"}  duration-500 `}
             onClick={() => handleCardClick(index)}
           >
             <div className="absolute inset-0 flex justify-center items-center">
