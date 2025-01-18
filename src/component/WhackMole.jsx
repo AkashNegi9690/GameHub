@@ -14,7 +14,7 @@ export const WhackAMole = () => {
       const interval = setInterval(() => {
         const randomMole = Math.floor(Math.random() * gridSize);
         setActiveMole(randomMole);
-      }, 600);
+      }, 500);
       return () => clearInterval(interval);
     }
   }, [timeLeft,isStart]);
