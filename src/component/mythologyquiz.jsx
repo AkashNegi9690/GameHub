@@ -6,7 +6,7 @@ export function MythologyQuiz() {
     const [mythologyQuestions, setMythologyQuestions] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
-    const [timer, setTimer] = useState(30);
+    const [timer, setTimer] = useState(10);
     const [isDisabled, setIsDisabled] = useState(false);
     const [score, setScore] = useState(0);
     const [shuffledOptions, setShuffledOptions] = useState([]); // Store shuffled options
@@ -75,13 +75,13 @@ export function MythologyQuiz() {
         setSelectedAnswer(null);
         setIsDisabled(false);
         setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-        setTimer(30); // Reset timer for next question
+        setTimer(10); // Reset timer for next question
     };
     const reset=()=>{
         setSelectedAnswer(null);
         setIsDisabled(false);
         setCurrentQuestionIndex(0);
-        setTimer(30);
+        setTimer(10);
     }
 
     // Display loading message until questions are fetched
@@ -96,11 +96,11 @@ export function MythologyQuiz() {
         <>
         <Navbar site="Quizio"/>
             {currentQuestionIndex < mythologyQuestions.length - 1 && (
-                <div className="max-w-lg mx-auto p-4 bg-white rounded-lg shadow-lg">
+                <div className="max-w-96 mx-auto p-4 bg-white rounded-lg shadow-lg mt-20 ">
                     <h1 className="text-3xl font-bold text-center mb-4">Mythology Quiz</h1>
                     <div className="mb-4">
                         <p className="text-xl font-semibold text-center">Time left: {timer} seconds</p>
-                        <p className="text-lg mt-2 text-center">{currentQuestion.question}</p>
+                        <p className="text-lg mt-2 text-center">{currentQuestionIndex+1}.{currentQuestion.question}</p>
                     </div>
                     <div className="space-y-2">
                         {shuffledOptions.map((option, index) => (
