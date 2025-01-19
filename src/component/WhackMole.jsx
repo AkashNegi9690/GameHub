@@ -39,7 +39,7 @@ export const WhackAMole = () => {
 
   return (
     <>
-    <Navbar/>
+    <Navbar site="whackMole"/>
     <div className="flex flex-col items-center justify-center p-4 bg-blue-100 min-h-screen">
       <h1 className="text-3xl font-bold mb-4">Whack-a-Mole</h1>
       <div className="flex justify-between w-72 mb-4 ">
