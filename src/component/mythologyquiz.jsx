@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Navbar from "./navbar";
 
 export function MythologyQuiz() {
     const [mythologyQuestions, setMythologyQuestions] = useState([]);
@@ -8,18 +9,34 @@ export function MythologyQuiz() {
     const [timer, setTimer] = useState(30);
     const [isDisabled, setIsDisabled] = useState(false);
     const [score, setScore] = useState(0);
+    const [shuffledOptions, setShuffledOptions] = useState([]); // Store shuffled options
 
     // Fetch the quiz questions
     const fetchMythologyQuestions = async () => {
         try {
             const response = await axios.get(
-                "https://opentdb.com/api.php?amount=5&category=20&difficulty=easy&type=multiple"
+                "https://opentdb.com/api.php?amount=11&category=20&difficulty=easy&type=multiple"
             );
             setMythologyQuestions(response.data.results);
         } catch (err) {
             console.error("Error fetching questions:", err);
         }
     };
+
+    // Shuffle the options and set them to state
+    const shuffleOptions = (options) => {
+        return options.sort(() => Math.random() - 0.5);
+    };
+
+    // Handle the loading of the question and shuffle options
+    useEffect(() => {
+        if (mythologyQuestions.length > 0) {
+            const currentQuestion = mythologyQuestions[currentQuestionIndex];
+            const options = [...currentQuestion.incorrect_answers, currentQuestion.correct_answer];
+            const shuffled = shuffleOptions(options);
+            setShuffledOptions(shuffled); // Set shuffled options in state
+        }
+    }, [currentQuestionIndex, mythologyQuestions]);
 
     // Start the timer
     useEffect(() => {
@@ -60,57 +77,69 @@ export function MythologyQuiz() {
         setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
         setTimer(30); // Reset timer for next question
     };
+    const reset=()=>{
+        setSelectedAnswer(null);
+        setIsDisabled(false);
+        setCurrentQuestionIndex(0);
+        setTimer(30);
+    }
 
     // Display loading message until questions are fetched
     if (mythologyQuestions.length === 0) {
-        return <div>Loading questions...</div>;
+        return <div className="text-center py-4">Loading questions...</div>;
     }
 
-    // Get the current question and options
+    // Get the current question
     const currentQuestion = mythologyQuestions[currentQuestionIndex];
-    const options = [...currentQuestion.incorrect_answers, currentQuestion.correct_answer];
-    // Shuffle options to randomize their order
-    const shuffledOptions = options.sort(() => Math.random() - 0.5);
 
     return (
-        <div>
-            <h1>Mythology Quiz</h1>
-            <div>
-                <p>Time left: {timer} seconds</p>
-                <p>{currentQuestion.question}</p>
-                <div>
-                    {shuffledOptions.map((option, index) => (
-                        <button
-                            key={index}
-                            disabled={isDisabled}
-                            onClick={() => handleAnswerSelection(option)}
-                            style={{
-                                backgroundColor:
-                                    selectedAnswer === option
-                                        ? option === currentQuestion.correct_answer
-                                            ? "green"
-                                            : "red"
-                                        : "",
-                            }}
-                        >
-                            {option}
-                        </button>
-                    ))}
-                </div>
-            </div>
+        <>
+        <Navbar site="Quizio"/>
+            {currentQuestionIndex < mythologyQuestions.length - 1 && (
+                <div className="max-w-lg mx-auto p-4 bg-white rounded-lg shadow-lg">
+                    <h1 className="text-3xl font-bold text-center mb-4">Mythology Quiz</h1>
+                    <div className="mb-4">
+                        <p className="text-xl font-semibold text-center">Time left: {timer} seconds</p>
+                        <p className="text-lg mt-2 text-center">{currentQuestion.question}</p>
+                    </div>
+                    <div className="space-y-2">
+                        {shuffledOptions.map((option, index) => (
+                            <button
+                                key={index}
+                                disabled={isDisabled}
+                                onClick={() => handleAnswerSelection(option)}
+                                className={`w-full py-2 text-lg rounded-lg ${selectedAnswer === option
+                                    ? option === currentQuestion.correct_answer
+                                        ? "bg-green-500 text-white"
+                                        : "bg-red-500 text-white"
+                                    : "bg-gray-200 hover:bg-gray-300"
+                                    }`}
+                            >
+                                {option}
+                            </button>
+                        ))}
+                    </div>
 
-            {selectedAnswer && (
-                <div>
-                    <button onClick={nextQuestion}>Next Question</button>
+                    {selectedAnswer && (
+                        <div className="mt-4 text-center">
+                            <button
+                                onClick={nextQuestion}
+                                className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                            >
+                                Next Question
+                            </button>
+                        </div>
+                    )}
                 </div>
             )}
 
-            {currentQuestionIndex >= mythologyQuestions.length && (
-                <div>
-                    <h2>Quiz Over!</h2>
-                    <p>Your final score: {score}</p>
+            {currentQuestionIndex >= mythologyQuestions.length - 1 && (
+                <div className="mt-6 text-center">
+                    <h2 className="text-2xl font-semibold">Quiz Over!</h2>
+                    <p className="text-xl mt-2">Your final score: {score}</p>
+                    <button onClick={reset}  className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Play Again</button>
                 </div>
             )}
-        </div>
+        </>
     );
 }
