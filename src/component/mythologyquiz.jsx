@@ -100,7 +100,7 @@ export function MythologyQuiz() {
                     <h1 className="text-3xl font-bold text-center mb-4">Mythology Quiz</h1>
                     <div className="mb-4">
                         <p className="text-xl font-semibold text-center">Time left: {timer} seconds</p>
-                        <p className="text-lg mt-2 text-center">{currentQuestionIndex+1}.{currentQuestion.question}</p>
+                        <p className="text-lg mt-2 text-center">{currentQuestionIndex}.{currentQuestion.question}</p>
                     </div>
                     <div className="space-y-2">
                         {shuffledOptions.map((option, index) => (
