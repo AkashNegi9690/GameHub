@@ -1,9 +1,10 @@
+
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Navbar from "./navbar";
 
-export function MythologyQuiz() {
-    const [mythologyQuestions, setMythologyQuestions] = useState([]);
+export function HistoryQuiz() {
+    const [historyQuestions, sethisttoryQuestions] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [timer, setTimer] = useState(10);
@@ -12,12 +13,12 @@ export function MythologyQuiz() {
     const [shuffledOptions, setShuffledOptions] = useState([]); // Store shuffled options
 
     // Fetch the quiz questions
-    const fetchMythologyQuestions = async () => {
+    const fetchhistoryQuestions = async () => {
         try {
             const response = await axios.get(
-                "https://opentdb.com/api.php?amount=11&category=20&difficulty=easy&type=multiple"
+                "https://opentdb.com/api.php?amount=11&category=23&difficulty=easy&type=multiple"
             );
-            setMythologyQuestions(response.data.results);
+            sethisttoryQuestions(response.data.results);
         } catch (err) {
             console.error("Error fetching questions:", err);
         }
@@ -30,13 +31,13 @@ export function MythologyQuiz() {
 
     // Handle the loading of the question and shuffle options
     useEffect(() => {
-        if (mythologyQuestions.length > 0) {
-            const currentQuestion = mythologyQuestions[currentQuestionIndex];
+        if (historyQuestions.length > 0) {
+            const currentQuestion = historyQuestions[currentQuestionIndex];
             const options = [...currentQuestion.incorrect_answers, currentQuestion.correct_answer];
             const shuffled = shuffleOptions(options);
             setShuffledOptions(shuffled); // Set shuffled options in state
         }
-    }, [currentQuestionIndex, mythologyQuestions]);
+    }, [currentQuestionIndex, historyQuestions]);
 
     // Start the timer
     useEffect(() => {
@@ -52,7 +53,7 @@ export function MythologyQuiz() {
 
     // Fetch questions when the component mounts
     useEffect(() => {
-        fetchMythologyQuestions();
+        fetchhistoryQuestions();
     }, []);
 
     // Handle the selection of an answer
@@ -64,7 +65,7 @@ export function MythologyQuiz() {
 
     // Check if the answer is correct
     const checkAnswer = (selectedOption) => {
-        const currentQuestion = mythologyQuestions[currentQuestionIndex];
+        const currentQuestion = historyQuestions[currentQuestionIndex];
         if (selectedOption === currentQuestion.correct_answer) {
             setScore((prevScore) => prevScore + 1); // Increment score if correct
         }
@@ -85,19 +86,19 @@ export function MythologyQuiz() {
     }
 
     // Display loading message until questions are fetched
-    if (mythologyQuestions.length === 0) {
+    if (historyQuestions.length === 0) {
         return <div className="text-center py-4">Loading questions...</div>;
     }
 
     // Get the current question
-    const currentQuestion = mythologyQuestions[currentQuestionIndex];
+    const currentQuestion = historyQuestions[currentQuestionIndex];
 
     return (
         <>
         <Navbar site="Quizio"/>
-            {currentQuestionIndex < mythologyQuestions.length - 1 && (
+            {currentQuestionIndex < historyQuestions.length - 1 && (
                 <div className="max-w-96 mx-auto p-4 bg-white rounded-lg shadow-lg mt-20 ">
-                    <h1 className="text-3xl font-bold text-center mb-4">Mythology Quiz</h1>
+                    <h1 className="text-3xl font-bold text-center mb-4">History Quiz</h1>
                     <div className="mb-4">
                         <p className="text-xl font-semibold text-center">Time left: {timer} seconds</p>
                         <p className="text-lg mt-2 text-center">{currentQuestionIndex+1}.{currentQuestion.question}</p>
@@ -133,7 +134,7 @@ export function MythologyQuiz() {
                 </div>
             )}
 
-            {currentQuestionIndex >= mythologyQuestions.length - 1 && (
+            {currentQuestionIndex >= historyQuestions.length - 1 && (
                 <div className="mt-6 text-center">
                     <h2 className="text-2xl font-semibold">Quiz Over!</h2>
                     <p className="text-xl mt-2">Your final score: {score}</p>
