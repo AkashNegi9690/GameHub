@@ -8,6 +8,7 @@ import { MythologyQuiz } from "./component/mythologyquiz";
 import { HistoryQuiz } from "./component/historyquiz";
 import { AnimalsQuiz } from "./component/animalquiz";
 import { Geographyquiz } from "./component/geographyquiz";
+import { MinesweeperGame } from "./component/minesweep";
 
 export default function App() {
  return <>
@@ -22,6 +23,7 @@ export default function App() {
   <Route path= "/history" element={<HistoryQuiz/>}/>
   <Route path= "/animals" element={<AnimalsQuiz/>}/>
   <Route path= "/geography" element={<Geographyquiz/>}/>
+  <Route path= "/minesweeper" element={<MinesweeperGame/>}/>
 
  </Routes>
  </BrowserRouter>
